@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.fiap.bank</groupId>
+        <artifactId>fiap-bank-atm</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>bootstrap</artifactId>
+    <packaging>jar</packaging>
+    <name>fiap-bank-atm-bootstrap</name>
+    <description>Composition Root: único ponto do sistema autorizado a conhecer todas as camadas para realizar a injeção de dependências.</description>
+
+    <!--
+        COMPOSITION ROOT (Raiz de Composição)
+        Este módulo existe justamente para que a camada de apresentação NÃO
+        precise depender de 'infrastructure' para instanciar o repositório.
+        Aqui, e somente aqui, as camadas são amarradas (injeção de dependência
+        manual) antes de a aplicação subir.
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>com.fiap.bank</groupId>
+            <artifactId>presentation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fiap.bank</groupId>
+            <artifactId>application</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fiap.bank</groupId>
+            <artifactId>infrastructure</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Permite executar a aplicação via: mvn -pl bootstrap exec:java -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.fiap.bank.atm.AtmApplication</mainClass>
+                </configuration>
+            </plugin>
+
+            <!-- Gera um JAR executável único (fat jar) com todas as camadas -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.fiap.bank.atm.AtmApplication</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <finalName>fiap-bank-atm</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-executable-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

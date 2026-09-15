@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.fiap.bank</groupId>
+        <artifactId>fiap-bank-atm</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>infrastructure</artifactId>
+    <packaging>jar</packaging>
+    <name>fiap-bank-atm-infrastructure</name>
+    <description>Camada de Infraestrutura: implementação dos repositórios do domínio com JDBC nativo sobre SQLite.</description>
+
+    <!--
+        REGRA ARQUITETURAL: a infraestrutura implementa os contratos ditados
+        pelo domínio (Inversão de Dependência), logo depende de 'domain'.
+        CP4 - Fase 4: driver relacional SQLite declarado exclusivamente aqui.
+        PROIBIDO o uso de ORMs (Hibernate/JPA/Spring Data) - apenas JDBC puro.
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>com.fiap.bank</groupId>
+            <artifactId>domain</artifactId>
+        </dependency>
+
+        <!-- Driver SQLite JDBC -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+    </dependencies>
+</project>

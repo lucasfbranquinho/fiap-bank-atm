@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.fiap.bank</groupId>
+        <artifactId>fiap-bank-atm</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>presentation</artifactId>
+    <packaging>jar</packaging>
+    <name>fiap-bank-atm-presentation</name>
+    <description>Camada de Apresentação: interface gráfica Java Swing (FlatLaf) do caixa eletrônico.</description>
+
+    <!--
+        REGRA ARQUITETURAL INVIOLÁVEL (CP4 - Regra 2):
+        A camada de apresentação enxerga ÚNICA E EXCLUSIVAMENTE a camada de
+        aplicação. Não existe aqui nenhuma tag <dependency> apontando para
+        'domain' ou 'infrastructure' - a blindagem é garantida em tempo de
+        compilação pelo próprio Maven. O Swing só conversa com a aplicação
+        através de DTOs (Java Records).
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>com.fiap.bank</groupId>
+            <artifactId>application</artifactId>
+        </dependency>
+
+        <!-- FlatLaf - Modern Look and Feel (biblioteca visual, sem regra de negócio) -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+        </dependency>
+    </dependencies>
+</project>
