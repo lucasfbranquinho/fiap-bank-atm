@@ -1,6 +1,7 @@
 package com.fiap.bank.atm.domain.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
@@ -12,7 +13,9 @@ public final class Money {
     private final BigDecimal amount;
 
     private Money(BigDecimal amount) {
-        this.amount = amount.setScale(2);
+        // Arredondamento bancário explícito: evita ArithmeticException ao reidratar
+        // valores DECIMAL(15,2) vindos do banco de dados relacional.
+        this.amount = amount.setScale(2, RoundingMode.HALF_UP);
     }
 
     public static Money of(double amount) {
