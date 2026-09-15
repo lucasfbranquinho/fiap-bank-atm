@@ -4,24 +4,33 @@ echo ====================================================
 echo        FIAP BANK - EMULADOR DE CAIXA ELETRÔNICO
 echo ====================================================
 echo.
-echo Procurando o Maven do Apache NetBeans...
+echo Compilando os módulos (domain, application, infrastructure,
+echo presentation e bootstrap) e iniciando a aplicação...
+echo.
 
 set MVN_PATH="C:\Program Files\Apache NetBeans\java\maven\bin\mvn.cmd"
 
 if exist %MVN_PATH% (
-    echo Maven encontrado! Iniciando a aplicação...
-    call %MVN_PATH% clean compile exec:java
+    call %MVN_PATH% clean package -DskipTests
 ) else (
-    echo.
-    echo [AVISO] Maven do NetBeans não encontrado no caminho padrão.
-    echo Tentando usar comando 'mvn' global...
     where mvn >nul 2>nul
     if %errorlevel% equ 0 (
-        call mvn clean compile exec:java
+        call mvn clean package -DskipTests
     ) else (
         echo [ERRO] Maven não encontrado. Por favor, abra este projeto
-        echo no Apache NetBeans e execute-o diretamente pelo editor,
-        echo ou instale o Maven e adicione-o ao seu PATH.
+        echo na sua IDE e execute a classe com.fiap.bank.atm.AtmApplication
+        echo do módulo bootstrap, ou instale o Maven e adicione-o ao PATH.
         pause
+        exit /b 1
     )
 )
+
+if not exist "bootstrap\target\fiap-bank-atm.jar" (
+    echo [ERRO] A compilação falhou. Verifique as mensagens acima.
+    pause
+    exit /b 1
+)
+
+echo.
+echo Iniciando o caixa eletrônico...
+java -jar bootstrap\target\fiap-bank-atm.jar
