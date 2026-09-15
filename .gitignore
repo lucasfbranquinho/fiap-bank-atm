@@ -1,1 +1,16 @@
-target/**
+# Build output (Maven)
+target/
+**/target/
+
+# Banco de dados SQLite gerado em tempo de execucao
+*.db
+*.db-journal
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+nbproject/private/
+.settings/
+.classpath
+.project
